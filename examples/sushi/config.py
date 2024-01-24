@@ -139,3 +139,40 @@ environment_catalog_mapping_config = Config(
         ".*": "dev_catalog",
     },
 )
+
+
+# Steps to replicate
+#   rm -rf data/*.duckdb logs/*.log
+#   sqlmesh --config <case_#> plan
+#   sqlmesh --config <case_#> fetchdf 'select count(*) from sushi.customer_revenue_lifetime'
+
+
+# This works
+case_1 = Config(
+    default_connection=DuckDBConnectionConfig(database=f"{DATA_DIR}/case_1.duckdb"),
+    model_defaults=ModelDefaultsConfig(dialect="duckdb"),
+)
+
+# plan works, fetchdf fails
+# This also fails
+#   sqlmesh --config case_2 fetchdf 'select count(*) from physical.sushi.customer_revenue_lifetime'
+case_2 = Config(
+    default_connection=DuckDBConnectionConfig(
+        catalogs={"physical": f"{DATA_DIR}/case_2.duckdb"}
+    ),
+    model_defaults=ModelDefaultsConfig(dialect="duckdb"),
+)
+
+# plan works, fetchdf fails
+# This also fails
+#   sqlmesh --config case_3 fetchdf 'select count(*) from physical.sushi.customer_revenue_lifetime'
+#   sqlmesh --config case_3 fetchdf 'select count(*) from other.sushi.customer_revenue_lifetime'
+case_3 = Config(
+    default_connection=DuckDBConnectionConfig(
+        catalogs={
+            "physical": f"{DATA_DIR}/case_3.duckdb",
+            "other": f"{DATA_DIR}/case_3_other.duckdb",
+        }
+    ),
+    model_defaults=ModelDefaultsConfig(dialect="duckdb"),
+)
