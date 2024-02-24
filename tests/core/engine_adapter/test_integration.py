@@ -453,6 +453,14 @@ def config() -> Config:
             ],
         ),
         pytest.param(
+            "spanner",
+            marks=[
+                pytest.mark.spanner,
+                pytest.mark.engine,
+                pytest.mark.remote,
+            ],
+        ),
+        pytest.param(
             "bigquery",
             marks=[
                 pytest.mark.bigquery,

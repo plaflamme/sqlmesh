@@ -99,6 +99,22 @@ services:
     depends_on:
       - trino_metastore_db
 
+  # Cloud Spanner
+  spanner:
+    image: gcr.io/cloud-spanner-emulator/emulator
+    hostname: spanner
+    ports:
+      - '9010:9010'
+      - '9020:9020'
+
+  init-spanner:
+    image: curlimages/curl
+    command: |
+      -v --retry-connrefused --retry-delay 0 --retry 15 -XPOST spanner:9020/v1/projects/test-project/instances -d '{"instanceId": "test-instance"}'
+      --next -v --retry-connrefused --retry-delay 0 --retry 15 -XPOST spanner:9020/v1/projects/test-project/instances/test-instance/databases -d '{"createStatement":"CREATE DATABASE test_database", "databaseDialect":"POSTGRESQL"}'
+    depends_on:
+      - spanner
+
   # Spark Stack
   spark:
     build:

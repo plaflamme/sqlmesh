@@ -779,6 +779,63 @@ class GCPPostgresConnectionConfig(ConnectionConfig):
         return Connector().connect
 
 
+class CloudSpannerConnectionConfig(ConnectionConfig):
+    """
+    Cloud Spanner Connection Configuration.
+
+    Args:
+        project: The GCP project name
+        instance_id: The Cloud Spanner instance name
+        database_id: The Cloud Spanner database name
+        emulator_host: The connection string to the spanner emulator, e.g.: spanner-emulator:9010
+    """
+
+    project: str
+    instance_id: str
+    database_id: t.Optional[str] = None
+    emulator_host: t.Optional[str] = None
+
+    type_: Literal["cloud_spanner"] = Field(alias="type", default="cloud_spanner")
+    concurrent_tasks: int = 1
+    register_comments: bool = False
+
+    @property
+    def _static_connection_kwargs(self) -> t.Dict[str, t.Any]:
+        if self.emulator_host is None:
+            return {}
+
+        from google.api_core.client_options import ClientOptions
+        from google.auth.credentials import AnonymousCredentials
+        from google.cloud.spanner_v1 import Client
+
+        client = Client(
+            project=self.project,
+            credentials=AnonymousCredentials(),
+            client_options=ClientOptions(
+                api_endpoint=self.emulator_host,
+            ),
+        )
+        return {"client": client}
+
+    @property
+    def _connection_kwargs_keys(self) -> t.Set[str]:
+        return {
+            "project",
+            "instance_id",
+            "database_id",
+        }
+
+    @property
+    def _engine_adapter(self) -> t.Type[EngineAdapter]:
+        return engine_adapter.PostgresEngineAdapter
+
+    @property
+    def _connection_factory(self) -> t.Callable:
+        from google.cloud.spanner_dbapi.connection import connect
+
+        return connect
+
+
 class RedshiftConnectionConfig(ConnectionConfig):
     """
     Redshift Connection Configuration.

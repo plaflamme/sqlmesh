@@ -2,6 +2,7 @@ from sqlmesh.core.config.categorizer import AutoCategorizationMode, CategorizerC
 from sqlmesh.core.config.common import EnvironmentSuffixTarget
 from sqlmesh.core.config.connection import (
     BigQueryConnectionConfig,
+    CloudSpannerConnectionConfig,
     ConnectionConfig,
     DatabricksConnectionConfig,
     DuckDBConnectionConfig,
