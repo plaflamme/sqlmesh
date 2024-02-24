@@ -78,6 +78,7 @@ setup(
             "google-auth",
             "google-cloud-bigquery",
             "google-cloud-bigquery-storage",
+            "google-cloud-spanner",
             "isort==5.10.1",
             "mypy~=1.8.0",
             # Pendulum 3.0.0 contains a breaking change for Airflow.
@@ -150,6 +151,9 @@ setup(
         "snowflake": [
             "snowflake-connector-python[pandas,secure-local-storage]",
             "pyarrow>=10.0.1,<10.1.0",
+        ],
+        "spanner": [
+            "google-cloud-spanner",
         ],
         "trino": [
             "trino",
