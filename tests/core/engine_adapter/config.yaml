@@ -55,6 +55,13 @@ gateways:
       port: 5432
       concurrent_tasks: 1
       register_comments: true
+    state_connection:
+      type: cloud_spanner
+      instance_id: test-instance
+      database_id: test_database
+      project: test-project
+      emulator_host: localhost:9010
+    state_schema: test_database
   inttest_mysql:
     connection:
       type: mysql
@@ -64,12 +71,12 @@ gateways:
       port: 3306
       charset: utf8
       register_comments: true
-  inttest_spanner:
-    connection:
-      type: cloud_spanner
-      instance_id: test-instance
-      database_id: test_database
-      project: test-project
-      emulator_host: localhost:9010
+  # inttest_spanner:
+  #   connection:
+  #     type: cloud_spanner
+  #     instance_id: test-instance
+  #     database_id: test_database
+  #     project: test-project
+  #     emulator_host: localhost:9010
 model_defaults:
     dialect: duckdb

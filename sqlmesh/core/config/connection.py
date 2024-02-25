@@ -827,7 +827,7 @@ class CloudSpannerConnectionConfig(ConnectionConfig):
 
     @property
     def _engine_adapter(self) -> t.Type[EngineAdapter]:
-        return engine_adapter.PostgresEngineAdapter
+        return engine_adapter.CloudSpannerEngineAdapter
 
     @property
     def _connection_factory(self) -> t.Callable:
