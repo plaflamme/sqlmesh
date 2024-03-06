@@ -616,7 +616,8 @@ class BigQueryEngineAdapter(InsertOverwriteWithMergeMixin):
             timeout=self._extra_config.get("job_creation_timeout_seconds"),
         )
 
-        logger.debug(
+        logger.log(
+            self._execute_log_level,
             "BigQuery job created: https://console.cloud.google.com/bigquery?project=%s&j=bq:%s:%s",
             self._query_job.project,
             self._query_job.location,
