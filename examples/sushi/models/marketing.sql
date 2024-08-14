@@ -4,7 +4,8 @@ MODEL (
   owner jen,
   cron '@daily',
   grain customer_id,
-  description 'Sushi marketing data'
+  description 'Sushi marketing data',
+  signals [(kind='AlwaysReady')]
 );
 
 SELECT
