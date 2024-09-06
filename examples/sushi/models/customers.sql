@@ -2,13 +2,14 @@ MODEL (
   name sushi.customers,
   kind FULL,
   owner jen,
-  cron '@daily',
+  cron '*/5 * * * *',
   tags (pii, fact),
   grain customer_id,
   description 'Sushi customer data',
   column_descriptions (
     customer_id = 'customer_id uniquely identifies customers'
-  )
+  ),
+  signals [(kind='always')]
 );
 
 CREATE SCHEMA IF NOT EXISTS raw;
