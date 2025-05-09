@@ -567,6 +567,13 @@ def test_ast_correctness(macro_evaluator):
             "SELECT 3",
             {},
         ),
+        (
+            """@DEF(foo, x -> (SELECT x AS foo));
+            @DEF(bar, (x,y) -> (@foo(x) UNION ALL @foo(y)));
+            SELECT @bar(1,2)""",
+            "SELECT 1 AS foo UNION ALL SELECT 2 AS foo",
+            {},
+        ),
     ],
 )
 def test_macro_functions(macro_evaluator: MacroEvaluator, assert_exp_eq, sql, expected, args):
